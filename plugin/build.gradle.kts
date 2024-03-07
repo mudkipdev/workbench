@@ -12,7 +12,8 @@ configurations.compileOnly.configure {
 }
 
 dependencies {
-    implementation(project(":api"))
+    implementation(gradleApi())
+    jarInclude(project(":api"))
 }
 
 tasks.shadowJar {
