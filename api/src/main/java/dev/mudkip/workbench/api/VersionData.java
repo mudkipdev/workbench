@@ -1,0 +1,35 @@
+package dev.mudkip.workbench.api;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public interface VersionData {
+    String getMainClass();
+    ArgumentListing getMinecraftArgs();
+    ArgumentListing getJvmArgs();
+    List<Library> getLibraries();
+    String getId();
+    GameType getType();
+
+    record Library(String name, String url) {}
+
+    class ArgumentListing extends HashMap<String, String> {
+        public String joined(Map<String, String> values) {
+            return this.entrySet().stream().map(entry -> {
+                StringBuilder builder = new StringBuilder(entry.getKey());
+                if (entry.getValue() != null) {
+                    String valueName = entry.getValue().replaceAll("[{}]", "");
+                    if (values.containsKey(valueName)) {
+                        builder.append(" ")
+                                .append(values.get(valueName));
+                    } else {
+                        throw new IllegalStateException("Missing value for key-value " + valueName);
+                    }
+                }
+                return builder.toString();
+            }).collect(Collectors.joining(" "));
+        }
+    }
+}
