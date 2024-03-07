@@ -19,7 +19,8 @@ tasks.withType<ShadowJar> {
 }
 
 dependencies {
-    implementation(project(":api"))
+    implementation(gradleApi())
+    jarInclude(project(":api"))
 }
 
 gradlePlugin {
