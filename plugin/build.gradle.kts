@@ -1,7 +1,21 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     `java-library`
     `java-gradle-plugin`
     `maven-publish`
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+}
+
+val jarInclude by configurations.creating {}
+
+configurations.compileOnly.configure {
+    extendsFrom(jarInclude)
+}
+
+tasks.withType<ShadowJar> {
+    archiveClassifier = null
+    configurations = listOf(jarInclude)
 }
 
 dependencies {
