@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     `java-library`
     `java-gradle-plugin`
@@ -7,29 +5,41 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-val jarInclude by configurations.creating {}
+val jarInclude: Configuration by configurations.creating {}
 
 configurations.compileOnly.configure {
     extendsFrom(jarInclude)
-}
-
-tasks.withType<ShadowJar> {
-    archiveClassifier = null
-    configurations = listOf(jarInclude)
 }
 
 dependencies {
     implementation(project(":api"))
 }
 
+tasks.shadowJar {
+    archiveClassifier = ""
+    configurations = listOf(jarInclude)
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
+
 gradlePlugin {
     plugins {
         create("workbench") {
             id = "dev.mudkip.workbench"
-            displayName = "Workbench"
-            description = "Gradle plugin for Minecraft"
+            displayName = "workbench"
+            description = "A Gradle plugin for decompiling and modding Minecraft"
             implementationClass = "dev.mudkip.workbench.WorkbenchPlugin"
-            tags = listOf("minecraft", "modding", "decompilation", "deobfuscation", "amber", "amber-toolchain")
+
+            tags = listOf(
+                "minecraft",
+                "modding",
+                "decompilation",
+                "deobfuscation",
+                "amber",
+                "amber-toolchain"
+            )
         }
     }
 }
@@ -37,13 +47,14 @@ gradlePlugin {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            groupId = groupId
+            groupId = project.group.toString()
             artifactId = "workbench-plugin"
             from(components["java"])
         }
     }
+
     repositories {
         mavenLocal()
-        // Add gradle plugin portal later here
+        // gradlePluginPortal()
     }
 }

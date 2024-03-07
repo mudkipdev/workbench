@@ -1,10 +1,11 @@
+rootProject.name = "workbench"
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        mavenCentral()
     }
 }
-
-rootProject.name = "workbench"
 
 include("api")
 include("plugin")
