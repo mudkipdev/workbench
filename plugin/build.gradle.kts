@@ -19,7 +19,7 @@ tasks.withType<ShadowJar> {
 }
 
 dependencies {
-    implementation(":api")
+    implementation(project(":api"))
 }
 
 gradlePlugin {
