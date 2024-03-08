@@ -6,12 +6,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public interface VersionData {
+    String getJson();
     String getMainClass();
     ArgumentListing getMinecraftArgs();
     ArgumentListing getJvmArgs();
     List<Library> getLibraries();
     String getId();
     GameType getType();
+    Downloads getDownloads();
 
     record Library(String name, String url) {}
 
@@ -30,6 +32,12 @@ public interface VersionData {
                 }
                 return builder.toString();
             }).collect(Collectors.joining(" "));
+        }
+    }
+
+    record Downloads(String clientUrl, String serverUrl) {
+        public boolean hasServer() {
+            return serverUrl != null;
         }
     }
 }
