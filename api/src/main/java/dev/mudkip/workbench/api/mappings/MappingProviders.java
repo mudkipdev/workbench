@@ -28,7 +28,7 @@ public enum MappingProviders implements IMappingProvider {
     FEATHER(true, MappingFormat.TINY_2_FILE) {
         @Override
         public MemoryMappingTree getMappings(String version, Path file) {
-            Utils.download("https://maven.ornithemc.net/#/releases/net/ornithemc/feather/" + version + "/" + version + "-mergedv2.jar", file);
+            Utils.download("https://maven.ornithemc.net/releases/net/ornithemc/feather/" + version + "//feather-" + version + "-mergedv2.jar", file);
             try (JarFile jarFile = new JarFile(file.toFile())) {
                 JarEntry entry = jarFile.getJarEntry("mappings/mappings.tiny");
                 try (InputStream stream = jarFile.getInputStream(entry)) {
