@@ -1,4 +1,6 @@
-package dev.mudkip.workbench.api;
+package dev.mudkip.workbench.api.versions;
+
+import dev.mudkip.workbench.api.GameType;
 
 import java.util.HashMap;
 import java.util.List;
