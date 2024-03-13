@@ -1,7 +1,9 @@
-package dev.mudkip.workbench.api.versions;
+package dev.mudkip.workbench.api.version;
 
-public interface IVersionProvider {
+public interface VersionProvider {
     String getManifestURL();
+
     VersionData getVersion(String name);
+
     String[] getAllVersions();
 }

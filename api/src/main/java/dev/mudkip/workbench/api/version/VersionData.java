@@ -1,20 +1,26 @@
-package dev.mudkip.workbench.api.versions;
-
-import dev.mudkip.workbench.api.GameType;
+package dev.mudkip.workbench.api.version;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface VersionData {
     String getJson();
+
     String getMainClass();
+
     ArgumentListing getMinecraftArgs();
+
     ArgumentListing getJvmArgs();
+
     List<Library> getLibraries();
+
     String getId();
-    GameType getType();
+
+    Optional<ReleaseCycle> getType();
+
     Downloads getDownloads();
 
     record Library(String name, String url) {}

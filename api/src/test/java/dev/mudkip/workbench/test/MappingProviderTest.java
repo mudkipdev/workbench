@@ -1,21 +1,19 @@
 package dev.mudkip.workbench.test;
 
-import dev.mudkip.workbench.api.mappings.MappingProviders;
+import dev.mudkip.workbench.api.mappings.Mappings;
 import net.fabricmc.mappingio.tree.MemoryMappingTree;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Map;
 
 class MappingProviderTest {
 
     @Test
     void testFeatherMappings() {
         assertDoesNotThrow(() -> {
-            String[] versions = MappingProviders.FEATHER.getVersions();
+            String[] versions = Mappings.FEATHER.getVersions();
             assertNotEquals(0, versions.length);
         });
     }
@@ -23,7 +21,7 @@ class MappingProviderTest {
     @Test
     void testMemoryMappingTree() {
         assertDoesNotThrow(() -> {
-            MemoryMappingTree tree = MappingProviders.FEATHER.getMappings("b1.7.3-server+build.21", new File("./mappings.zip").toPath());
+            MemoryMappingTree tree = Mappings.FEATHER.getMappings("b1.7.3-server+build.21", new File("./mappings.zip").toPath());
         });
     }
 

@@ -1,11 +1,12 @@
-package dev.mudkip.workbench.api.versions.serializers;
+package dev.mudkip.workbench.api.version.serializer;
 
 import com.google.gson.*;
-import dev.mudkip.workbench.api.GameType;
-import dev.mudkip.workbench.api.versions.VersionData;
+import dev.mudkip.workbench.api.version.ReleaseCycle;
+import dev.mudkip.workbench.api.version.VersionData;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 
 public class BetaCraftFormatSerializer implements JsonSerializer<VersionData>, JsonDeserializer<VersionData> {
     @Override
@@ -66,8 +67,8 @@ public class BetaCraftFormatSerializer implements JsonSerializer<VersionData>, J
             }
 
             @Override
-            public GameType getType() {
-                return GameType.get(object.getAsJsonPrimitive("type").getAsString());
+            public Optional<ReleaseCycle> getType() {
+                return ReleaseCycle.get(object.getAsJsonPrimitive("type").getAsString());
             }
 
             @Override
