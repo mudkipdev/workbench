@@ -21,12 +21,12 @@ class MappingProviderTest {
     @Test
     void testMemoryMappingTree() {
         assertDoesNotThrow(() -> {
-            MemoryMappingTree tree = Mappings.FEATHER.getMappings("b1.7.3-server+build.21", new File("./mappings.zip").toPath());
+            MemoryMappingTree tree = Mappings.BABRIC_INTERMEDIARY.getMappings("b1.7.3", new File("./mappings.zip").toPath());
         });
     }
 
     @AfterAll
     static void afterAll() {
-        new File("./mappings.zip").delete();
+        // new File("./mappings.zip").delete();
     }
 }

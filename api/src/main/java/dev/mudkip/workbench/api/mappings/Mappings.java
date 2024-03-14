@@ -55,6 +55,36 @@ public enum Mappings implements MappingProvider {
                 throw new RuntimeException(e);
             }
         }
+    },
+    BABRIC_INTERMEDIARY(true, MappingFormat.TINY_2_FILE) {
+        @Override
+        public MemoryMappingTree getMappings(String version, Path file) {
+            UrlUtility.download(
+                    Urls.BABRIC_URL + "/intermediary/" + version + "/intermediary-" + version + "-v2.jar",
+                    file);
+
+            try (JarFile jarFile = new JarFile(file.toFile())) {
+                JarEntry entry = jarFile.getJarEntry("mappings/mappings.tiny");
+
+                try (InputStream stream = jarFile.getInputStream(entry)) {
+                    MemoryMappingTree mem = new MemoryMappingTree();
+                    MappingReader.read(new InputStreamReader(stream), mem);
+                    return mem;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public String[] getVersions() {
+            try {
+                return Mappings.readMetadata(new URL(Urls.BABRIC_URL + "/intermediary/maven-metadata.xml"))
+                        .versioning().releases();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     };
 
     private final boolean intermediary;
