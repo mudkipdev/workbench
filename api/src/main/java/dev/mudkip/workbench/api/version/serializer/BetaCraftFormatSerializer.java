@@ -3,8 +3,11 @@ package dev.mudkip.workbench.api.version.serializer;
 import com.google.gson.*;
 import dev.mudkip.workbench.api.version.ReleaseCycle;
 import dev.mudkip.workbench.api.version.VersionData;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.arch.Processor;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +61,22 @@ public class BetaCraftFormatSerializer implements JsonSerializer<VersionData>, J
 
             @Override
             public List<Library> getLibraries() {
-                return null;
+                List<Library> libraries = new ArrayList<>();
+                for (JsonElement libObj : object.getAsJsonArray("libraries")) {
+                    JsonObject lib = libObj.getAsJsonObject();
+                    if (lib.getAsJsonObject("downloads")
+                            .has("artifact")) {
+                        libraries.add(new Library(
+                                lib.getAsJsonPrimitive("name").getAsString(),
+                                lib.getAsJsonObject("downloads")
+                                        .getAsJsonObject("artifact")
+                                        .getAsJsonPrimitive("url").getAsString(),
+                                false));
+                    } else if (lib.getAsJsonObject("downloads")
+                            .has("classifiers")) {
+                    }
+                }
+                return libraries;
             }
 
             @Override

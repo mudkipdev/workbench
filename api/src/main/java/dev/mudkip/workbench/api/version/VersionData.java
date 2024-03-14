@@ -23,7 +23,8 @@ public interface VersionData {
 
     Downloads getDownloads();
 
-    record Library(String name, String url) {}
+    record Library(String name, String url, boolean isRuntime) {
+    }
 
     class ArgumentListing extends HashMap<String, String> {
         public String joined(Map<String, String> values) {
