@@ -71,9 +71,29 @@ public class BetaCraftFormatSerializer implements JsonSerializer<VersionData>, J
                                 lib.getAsJsonObject("downloads")
                                         .getAsJsonObject("artifact")
                                         .getAsJsonPrimitive("url").getAsString(),
-                                false));
+                                Library.Type.STANDARD));
                     } else if (lib.getAsJsonObject("downloads")
                             .has("classifiers")) {
+                        if (Library.Type.find(lib) == Library.Type.NATIVE) {
+                            String nativeVersion = Library.NativeVersion.translate(lib);
+                            if (nativeVersion != null) {
+                                libraries.add(new Library(
+                                        lib.getAsJsonPrimitive("name").getAsString(),
+                                        lib.getAsJsonObject("downloads")
+                                                .getAsJsonObject("classifiers")
+                                                .getAsJsonObject(nativeVersion)
+                                                .getAsJsonPrimitive("url").getAsString(),
+                                        Library.Type.NATIVE));
+                            }
+                        } else if (Library.Type.find(lib) == Library.Type.AGENT) {
+                            libraries.add(new Library(
+                                    lib.getAsJsonPrimitive("name").getAsString(),
+                                    lib.getAsJsonObject("downloads")
+                                            .getAsJsonObject("classifiers")
+                                            .getAsJsonObject("agent")
+                                            .getAsJsonPrimitive("url").getAsString(),
+                                    Library.Type.AGENT));
+                        }
                     }
                 }
                 return libraries;
