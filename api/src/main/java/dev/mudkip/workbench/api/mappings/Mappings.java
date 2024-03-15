@@ -1,5 +1,6 @@
 package dev.mudkip.workbench.api.mappings;
 
+import dev.mudkip.workbench.api.utility.FileUtility;
 import dev.mudkip.workbench.api.utility.UrlUtility;
 import dev.mudkip.workbench.api.utility.Urls;
 import dev.mudkip.workbench.api.utility.MavenDependency;
@@ -33,17 +34,7 @@ public enum Mappings implements MappingProvider {
                     Urls.FEATHER_URL + "/" + version + "//feather-" + version + "-mergedv2.jar",
                     file);
 
-            try (JarFile jarFile = new JarFile(file.toFile())) {
-                JarEntry entry = jarFile.getJarEntry("mappings/mappings.tiny");
-
-                try (InputStream stream = jarFile.getInputStream(entry)) {
-                    MemoryMappingTree mem = new MemoryMappingTree();
-                    MappingReader.read(new InputStreamReader(stream), mem);
-                    return mem;
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            return FileUtility.readStandardTinyV2Jar(file.toFile());
         }
 
         @Override
@@ -62,18 +53,7 @@ public enum Mappings implements MappingProvider {
             UrlUtility.download(
                     Urls.BABRIC_URL + "/intermediary/" + version + "/intermediary-" + version + "-v2.jar",
                     file);
-
-            try (JarFile jarFile = new JarFile(file.toFile())) {
-                JarEntry entry = jarFile.getJarEntry("mappings/mappings.tiny");
-
-                try (InputStream stream = jarFile.getInputStream(entry)) {
-                    MemoryMappingTree mem = new MemoryMappingTree();
-                    MappingReader.read(new InputStreamReader(stream), mem);
-                    return mem;
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            return FileUtility.readStandardTinyV2Jar(file.toFile());
         }
 
         @Override

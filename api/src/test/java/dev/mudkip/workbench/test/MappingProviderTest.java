@@ -27,6 +27,6 @@ class MappingProviderTest {
 
     @AfterAll
     static void afterAll() {
-        // new File("./mappings.zip").delete();
+        new File("./mappings.zip").delete();
     }
 }
