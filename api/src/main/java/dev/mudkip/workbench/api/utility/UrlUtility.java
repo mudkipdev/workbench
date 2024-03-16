@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Path;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public final class UrlUtility {
 	private UrlUtility() {
@@ -22,6 +23,22 @@ public final class UrlUtility {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static <R> R map(URL url, Function<BufferedReader, R> readerConsumer) {
+		try (var stream = url.openStream()) {
+			return readerConsumer.apply(new BufferedReader(new InputStreamReader(stream)));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <R> R map(String url, Function<BufferedReader, R> readerConsumer) {
+        try {
+            return map(new URL(url), readerConsumer);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void use(String url, Consumer<BufferedReader> readerConsumer) {
 		try {

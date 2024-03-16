@@ -2,6 +2,10 @@ plugins {
     `java-library`
 }
 
+repositories {
+    maven("https://maven.fabricmc.net/")
+}
+
 dependencies {
     implementation("net.fabricmc:tiny-remapper:0.10.1")
     implementation("org.apache.commons:commons-lang3:3.14.0")

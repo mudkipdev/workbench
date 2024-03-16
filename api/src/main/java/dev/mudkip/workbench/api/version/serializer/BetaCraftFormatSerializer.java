@@ -111,6 +111,7 @@ public class BetaCraftFormatSerializer implements JsonSerializer<VersionData>, J
 
             @Override
             public Downloads getDownloads() {
+                System.out.println(object);
                 return new Downloads(
                         looping(object, "downloads.client").getAsJsonObject()
                                 .getAsJsonPrimitive("url").getAsString(),

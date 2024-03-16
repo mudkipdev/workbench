@@ -1,8 +1,13 @@
 package dev.mudkip.workbench.api.version;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dev.mudkip.workbench.api.utility.UrlUtility;
+import dev.mudkip.workbench.api.version.serializer.BetaCraftFormatSerializer;
+
+import java.nio.file.Files;
+import java.util.Objects;
 
 public enum VersionProviders implements VersionProvider {
     OFFICIAL("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json") {
@@ -17,9 +22,14 @@ public enum VersionProviders implements VersionProvider {
         }
     },
     BETACRAFT("https://files.betacraft.uk/launcher/v2/assets/version_list.json") {
+
         @Override
         public VersionData getVersion(String name) {
-            return null;
+            JsonObject data = Objects.requireNonNull(getManifestObject().getAsJsonArray("versions").asList()
+                            .stream().filter(e -> e.getAsJsonObject().getAsJsonPrimitive("id").getAsString().equals(name))
+                            .findFirst().orElse(null))
+                    .getAsJsonObject();
+            return UrlUtility.map(data.getAsJsonPrimitive("url").getAsString(), reader -> getGson().fromJson(reader, VersionData.class));
         }
 
         @Override
@@ -35,11 +45,14 @@ public enum VersionProviders implements VersionProvider {
     private JsonObject manifestObject;
 
     VersionProviders(String manifestUrl) {
-        Gson gson = new Gson();
         this.manifestUrl = manifestUrl;
-
         UrlUtility.use(manifestUrl, reader ->
-                manifestObject = gson.fromJson(reader, JsonObject.class));
+                manifestObject = getGson().fromJson(reader, JsonObject.class));
+    }
+
+    public static Gson getGson() {
+        return new GsonBuilder().registerTypeAdapter(VersionData.class, new BetaCraftFormatSerializer())
+                .create();
     }
 
     @Override

@@ -1,9 +1,8 @@
 package dev.mudkip.workbench.api.mappings.remapper;
 
-import net.fabricmc.mappingio.tree.MemoryMappingTree;
-
+import java.io.BufferedReader;
 import java.nio.file.Path;
 
 public interface RemapperService {
-    Path remap(Path input, MemoryMappingTree mappings);
+    void remap(Path input, Path output, String currentNs, String targetNs, BufferedReader mappings);
 }
