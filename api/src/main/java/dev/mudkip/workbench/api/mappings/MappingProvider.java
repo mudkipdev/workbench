@@ -15,9 +15,23 @@ public interface MappingProvider {
      */
     MemoryMappingTree getMappings(String version, Path file);
 
+    /**
+     * Returns all formats supported by the MappingProvider.
+     *
+     * @return Supported mapping formats
+     */
     MappingFormat[] getSupportedFormats();
 
+    /**
+     * @return True if the provider has an intermediary namespace
+     */
     boolean hasIntermediary();
 
+    /**
+     * Returns all versions available for the MappingProvider and can be successfully
+     * resolved by {@link MappingProvider#getMappings(String, Path)}.
+     *
+     * @return All versions available
+     */
     String[] getVersions();
 }
