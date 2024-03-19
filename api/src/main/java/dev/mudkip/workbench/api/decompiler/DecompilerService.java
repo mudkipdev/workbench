@@ -11,6 +11,7 @@ public interface DecompilerService {
      * @see Decompiler
      * @param input The input jar file
      * @param output The output directory
+     * @param libraries Additional libraries to be used during decompilation for better results
      */
     void decompile(Path input, Path output, Path... libraries);
 }
