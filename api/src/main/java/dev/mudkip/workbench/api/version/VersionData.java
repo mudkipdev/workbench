@@ -11,20 +11,44 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface VersionData {
+    /**
+     * @return JSON representation of the version data
+     */
     String getJson();
 
+    /**
+     * @return Reference to the main class of the current version
+     */
     String getMainClass();
 
+    /**
+     * @return The arguments used to launch the game
+     */
     ArgumentListing getMinecraftArgs();
 
+    /**
+     * @return The recommended arguments to launch JVM with
+     */
     ArgumentListing getJvmArgs();
 
+    /**
+     * @return The libraries required to run the game
+     */
     List<Library> getLibraries();
 
+    /**
+     * @return The version ID
+     */
     String getId();
 
+    /**
+     * @return The release cycle of the version
+     */
     Optional<ReleaseCycle> getType();
 
+    /**
+     * @return All downloadable sources for the version
+     */
     Downloads getDownloads();
 
     record Library(String name, String url, Type isRuntime) {
