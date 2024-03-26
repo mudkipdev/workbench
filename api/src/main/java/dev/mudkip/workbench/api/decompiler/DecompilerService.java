@@ -1,6 +1,7 @@
 package dev.mudkip.workbench.api.decompiler;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public interface DecompilerService {
     /**
@@ -8,10 +9,11 @@ public interface DecompilerService {
      * This action can be done by various decompilers, where Vineflower is recommended
      * as it is the most updated and feature-rich decompiler based on Fernflower.
      *
+     * @param input           The input jar file
+     * @param output          The output directory
+     * @param overrideOptions Additional options to be used during decompilation
+     * @param libraries       Additional libraries to be used during decompilation for better results
      * @see Decompiler
-     * @param input The input jar file
-     * @param output The output directory
-     * @param libraries Additional libraries to be used during decompilation for better results
      */
-    void decompile(Path input, Path output, Path... libraries);
+    void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries);
 }

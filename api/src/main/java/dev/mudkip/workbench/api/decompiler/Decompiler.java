@@ -14,7 +14,7 @@ import java.util.Map;
 public enum Decompiler implements DecompilerService {
     VINEFLOWER {
         @Override
-        public void decompile(Path input, Path output, Path... libraries) {
+        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
             Map<String, Object> props = new HashMap<>();
             Fernflower fernflower = new Fernflower(
                     new DirectoryResultSaver(output.toFile()),
@@ -27,13 +27,13 @@ public enum Decompiler implements DecompilerService {
     },
     CFR {
         @Override
-        public void decompile(Path input, Path output, Path... libraries) {
+        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
             throw new NotImplementedException();
         }
     },
     PROCYON {
         @Override
-        public void decompile(Path input, Path output, Path... libraries) {
+        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
             throw new NotImplementedException();
         }
     };
