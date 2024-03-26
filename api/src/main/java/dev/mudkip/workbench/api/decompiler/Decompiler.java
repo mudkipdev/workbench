@@ -1,61 +1,29 @@
 package dev.mudkip.workbench.api.decompiler;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.jetbrains.java.decompiler.main.Fernflower;
-import org.jetbrains.java.decompiler.main.decompiler.DirectoryResultSaver;
-import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 
-public enum Decompiler implements DecompilerService {
-    VINEFLOWER {
-        @Override
-        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
-            Map<String, Object> props = new HashMap<>();
-            Fernflower fernflower = new Fernflower(
-                    new DirectoryResultSaver(output.toFile()),
-                    props,
-                    new FernFlowerLogger()
-            );
-            fernflower.addSource(input.toFile());
-            fernflower.decompileContext();
-        }
-    },
-    CFR {
-        @Override
-        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
-            throw new NotImplementedException();
-        }
-    },
-    PROCYON {
-        @Override
-        public void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries) {
-            throw new NotImplementedException();
-        }
-    };
+public interface Decompiler {
+	Decompiler VINEFLOWER = new Vineflower();
+	Decompiler CFR = (input, output, overrideOptions, libraries) -> {
+		throw new NotImplementedException();
+	};
+	Decompiler PROCYON = (input, output, overrideOptions, libraries) -> {
+		throw new NotImplementedException();
+	};
 
-    static class FernFlowerLogger extends IFernflowerLogger {
-
-        private Logger logger = LoggerFactory.getLogger("Fernflower");
-
-        @Override
-        public void writeMessage(String s, Severity severity) {
-            writeMessage(s, severity, null);
-        }
-
-        @Override
-        public void writeMessage(String s, Severity severity, Throwable throwable) {
-            if (severity.ordinal() > Severity.INFO.ordinal()) {
-                if (throwable != null) {
-                    logger.error(s, throwable);
-                } else {
-                    logger.error(s);
-                }
-            }
-        }
-    }
+	/**
+	 * Decompiles a jar file into the specified output directory.
+	 * This action can be done by various decompilers, where Vineflower is recommended
+	 * as it is the most updated and feature-rich decompiler based on Fernflower.
+	 *
+	 * @param input           The input jar file
+	 * @param output          The output directory
+	 * @param overrideOptions Additional options to be used during decompilation
+	 * @param libraries       Additional libraries to be used during decompilation for better results
+	 * @see Decompiler
+	 */
+	void decompile(Path input, Path output, Map<String, Object> overrideOptions, Path... libraries);
 }
