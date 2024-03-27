@@ -3,8 +3,12 @@ package dev.mudkip.workbench.extensions;
 import dev.mudkip.workbench.api.decompiler.Decompiler;
 import dev.mudkip.workbench.api.mappings.MappingProvider;
 import dev.mudkip.workbench.api.mappings.Mappings;
+import org.gradle.api.NamedDomainObjectProvider;
+import org.gradle.api.Project;
 import org.gradle.api.plugins.ExtensionAware;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.SourceSet;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -40,7 +44,31 @@ public abstract class WorkbenchExtension implements ExtensionAware {
     public record DecompilerInstance(Decompiler decompiler, Map<String, Object> options) {
     }
 
-    public static class SourcesExtension {
-        // TODO: Implement
+    public static abstract class SourcesExtension {
+
+        public SourcesExtension(Project project) {
+            getDoSplitting().convention(true);
+            // https://melix.github.io/blog/2022/01/understanding-provider-api.html
+            getClient().convention(project.getExtensions().getByType(JavaPluginExtension.class)
+                    .getSourceSets().named("client"));
+            getServer().convention(project.getExtensions().getByType(JavaPluginExtension.class)
+                    .getSourceSets().named("server"));
+            getCommon().convention(project.getExtensions().getByType(JavaPluginExtension.class)
+                    .getSourceSets().named("common"));
+        }
+
+        public abstract Property<NamedDomainObjectProvider<SourceSet>> getClient();
+        public abstract Property<NamedDomainObjectProvider<SourceSet>> getServer();
+        public abstract Property<NamedDomainObjectProvider<SourceSet>> getCommon();
+        public abstract Property<Boolean> getDoSplitting();
+
+        /**
+         * Will indicate to the plugin, that no splitting(client, server, common) should be done
+         *
+         * @param sourceSet The source set where will the decompiled code be
+         */
+        public void noSplit(NamedDomainObjectProvider<SourceSet> sourceSet) {
+
+        }
     }
 }
