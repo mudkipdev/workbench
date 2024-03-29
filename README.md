@@ -1,5 +1,5 @@
 # Workbench
-A Gradle plugin and API for decompiling and modding Minecraft.
+An extensible gradle plugin and API for decompiling and modding Minecraft, mainly targetted for older versions.
 
 ### Usage
 Project is currently in a very early preview, so we can't provide much information as it can be changed without warnings.
