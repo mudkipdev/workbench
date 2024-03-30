@@ -15,6 +15,10 @@ import java.util.Map;
 
 public abstract class WorkbenchExtension implements ExtensionAware {
 
+    public WorkbenchExtension() {
+        getExtensions().create("sources", WorkbenchExtension.SourcesExtension.class);
+    }
+
     public abstract Property<String> getVersion();
     public abstract Property<MappingInstance> getMappings();
     public abstract Property<DecompilerInstance> getDecompiler();
@@ -68,7 +72,9 @@ public abstract class WorkbenchExtension implements ExtensionAware {
          * @param sourceSet The source set where will the decompiled code be
          */
         public void noSplit(NamedDomainObjectProvider<SourceSet> sourceSet) {
-
+            getDoSplitting().set(false);
+            getCommon().set(sourceSet);
+            getCommon().finalizeValue();
         }
     }
 }
