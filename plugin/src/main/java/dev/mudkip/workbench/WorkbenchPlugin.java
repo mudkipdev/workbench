@@ -11,6 +11,6 @@ public class WorkbenchPlugin implements Plugin<Project> {
     public void apply(@NotNull Project project) {
         project.getPluginManager().apply(JavaPlugin.class);
 
-        WorkbenchExtension wbExt = project.getExtensions().create("workbench", WorkbenchExtension.class);
+        WorkbenchExtension wbExt = project.getExtensions().create("workbench", WorkbenchExtension.class, project);
     }
 }

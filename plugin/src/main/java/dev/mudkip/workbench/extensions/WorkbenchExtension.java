@@ -15,8 +15,8 @@ import java.util.Map;
 
 public abstract class WorkbenchExtension implements ExtensionAware {
 
-    public WorkbenchExtension() {
-        getExtensions().create("sources", WorkbenchExtension.SourcesExtension.class);
+    public WorkbenchExtension(Project project) {
+        getExtensions().create("sources", WorkbenchExtension.SourcesExtension.class, project);
     }
 
     public abstract Property<String> getVersion();
