@@ -61,9 +61,21 @@ public abstract class WorkbenchExtension implements ExtensionAware {
                     .getSourceSets().named("common"));
         }
 
+        /**
+         * @return The source set where the client code will be placed
+         */
         public abstract Property<NamedDomainObjectProvider<SourceSet>> getClient();
         public abstract Property<NamedDomainObjectProvider<SourceSet>> getServer();
+
+        /**
+         * @return The source set where the common code will be decompiled to
+         */
         public abstract Property<NamedDomainObjectProvider<SourceSet>> getCommon();
+
+        /**
+         * @see #noSplit(NamedDomainObjectProvider)
+         * @return Whether the plugin should split the decompiled code into client, server and common
+         */
         public abstract Property<Boolean> getDoSplitting();
 
         /**
