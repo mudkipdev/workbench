@@ -13,6 +13,8 @@ configurations.compileOnly.configure {
 
 dependencies {
     jarInclude(project(":api"))
+    jarInclude("org.ow2.asm:asm:9.7")
+    jarInclude("org.ow2.asm:asm-tree:9.7")
     implementation(gradleApi())
 }
 
