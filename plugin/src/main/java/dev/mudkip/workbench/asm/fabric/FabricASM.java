@@ -169,7 +169,7 @@ public final class FabricASM {
 
     public static final class Manifest {
         public static final String PATH = "META-INF/MANIFEST.MF";
-        public static final String SPLIT_ENV = "Fabric-Loom-Split-Environment";
-        public static final String SPLIT_ENV_NAME = "Fabric-Loom-Split-Environment-Name";
+        public static final String ENVIRONMENT = "Game-Environment";
+        public static final String VERSION = "Game-Version";
     }
 }

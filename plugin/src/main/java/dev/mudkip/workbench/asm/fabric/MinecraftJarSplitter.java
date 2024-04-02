@@ -16,17 +16,19 @@ import java.util.stream.Stream;
 public class MinecraftJarSplitter implements AutoCloseable {
     private final Path clientInputJar;
     private final Path serverInputJar;
+    private final String version;
 
     private EntryData entryData;
     private Set<String> sharedEntries = new HashSet<>();
     private Set<String> forcedClientEntries = new HashSet<>();
 
-    public MinecraftJarSplitter(Path clientInputJar, Path serverInputJar) {
+    public MinecraftJarSplitter(Path clientInputJar, Path serverInputJar, String version) {
         this.clientInputJar = Objects.requireNonNull(clientInputJar);
         this.serverInputJar = Objects.requireNonNull(serverInputJar);
+        this.version = version;
     }
 
-    public void split(Path clientOnlyOutputJar, Path commonOutputJar) throws IOException {
+    public void split(Path clientOnlyOutputJar, Path commonOutputJar, Path serverOnlyOutputJar) throws IOException {
         Objects.requireNonNull(clientOnlyOutputJar);
         Objects.requireNonNull(commonOutputJar);
 
@@ -35,10 +37,11 @@ public class MinecraftJarSplitter implements AutoCloseable {
         }
 
         // Not something we expect, will require 3 jars, server, client and common.
-        assert entryData.serverOnlyEntries.isEmpty();
+        // assert entryData.serverOnlyEntries.isEmpty();
 
-        copyEntriesToJar(entryData.commonEntries, serverInputJar, commonOutputJar, "common");
-        copyEntriesToJar(entryData.clientOnlyEntries, clientInputJar, clientOnlyOutputJar, "client");
+        copyEntriesToJar(entryData.commonEntries, serverInputJar, commonOutputJar, "Common");
+        copyEntriesToJar(entryData.clientOnlyEntries, clientInputJar, clientOnlyOutputJar, "Client");
+        copyEntriesToJar(entryData.serverOnlyEntries, serverInputJar, serverOnlyOutputJar, "Server");
     }
 
     public void sharedEntry(String path) {
@@ -103,7 +106,8 @@ public class MinecraftJarSplitter implements AutoCloseable {
     private void writeManifest(FileSystemUtil.Delegate outputFs, String env) throws IOException {
         final Manifest manifest = new Manifest();
         manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-        manifest.getMainAttributes().putValue(FabricASM.Manifest.SPLIT_ENV_NAME, env);
+        manifest.getMainAttributes().putValue(FabricASM.Manifest.ENVIRONMENT, env);
+        manifest.getMainAttributes().putValue(FabricASM.Manifest.VERSION, version);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         manifest.write(out);
         Files.createDirectories(outputFs.get().getPath("META-INF"));
